@@ -1,0 +1,408 @@
+# ================================================================
+#  ALPHATRADER — COMPLETE COMMAND REFERENCE
+#  Everything you need. Never forget a command again.
+#
+#  LOCATION: C:\Users\I779173\projects\AlphaTrader
+#  OPEN TERMINAL: cd C:\Users\I779173\projects\AlphaTrader
+# ================================================================
+
+
+# ================================================================
+#  SECTION 1 — FIRST TIME SETUP  (run once ever)
+# ================================================================
+
+pip install yfinance pandas numpy
+pip install pandas-ta --no-deps
+pip install tqdm xgboost scikit-learn
+
+
+# ================================================================
+#  SECTION 2 — DAILY MORNING ROUTINE
+#  Run these every morning before market opens (9:00 AM)
+# ================================================================
+
+# --- Step 1: Get top 5 picks for today ---
+
+# BTST picks (Buy Today Sell Tomorrow)
+python predict.py --top5 --style btst
+
+# Swing picks (2-5 day hold)
+python predict.py --top5 --style swing
+
+# Intraday picks (same day exit)
+python predict.py --top5 --style intraday
+
+# --- Step 2: Add signals you decide to act on ---
+python track.py --add
+# (it will ask: Symbol, Signal, Entry, Target, SL, Days, Confidence)
+
+# --- Step 3: Check what signals are currently open ---
+python track.py --open
+
+
+# ================================================================
+#  SECTION 3 — DAILY EVENING ROUTINE
+#  Run after market close (3:30 PM)
+# ================================================================
+
+# Check all open signals — auto-marks TARGET / STOPLOSS / EXPIRED
+python track.py
+
+# See today's journal
+python track.py --journal
+
+
+# ================================================================
+#  SECTION 4 — WEEKLY ROUTINE  (every Sunday)
+# ================================================================
+
+# Full performance stats — win rate, Sharpe, expectancy
+python track.py --stats
+
+# Journal for last 90 days
+python track.py --journal 90
+
+# Export all trades to CSV
+python track.py --export
+
+# Retrain ML model with latest data (do monthly)
+python ml/training/train_ml.py --symbol all --days 1825
+
+
+# ================================================================
+#  SECTION 5 — SCANNING BY INDEX
+# ================================================================
+
+# Nifty 50  (large-cap, 50 stocks)
+python predict.py --symbol all --top5 --style btst
+python predict.py --symbol all --top5 --style swing
+python predict.py --symbol all --table
+
+# Nifty Midcap  (50 stocks)
+python predict.py --symbol midcap --top5 --style btst
+python predict.py --symbol midcap --top5 --style swing
+python predict.py --symbol midcap --table
+
+# Nifty Smallcap  (50 stocks)
+python predict.py --symbol smallcap --top5 --style btst
+python predict.py --symbol smallcap --top5 --style swing
+python predict.py --symbol smallcap --table
+
+# All 150 stocks combined  (takes ~5 min)
+python predict.py --symbol full --top5 --style btst
+python predict.py --symbol full --table
+
+
+# ================================================================
+#  SECTION 6 — SINGLE STOCK ANALYSIS
+# ================================================================
+
+# Full detailed card with chart patterns, scores, regime
+python predict.py --symbol RELIANCE
+python predict.py --symbol TCS
+python predict.py --symbol INFY
+python predict.py --symbol HDFCBANK
+python predict.py --symbol ICICIBANK
+python predict.py --symbol SBIN
+python predict.py --symbol BAJFINANCE
+python predict.py --symbol WIPRO
+python predict.py --symbol ADANIENT
+python predict.py --symbol ZOMATO
+
+# Single stock with specific style
+python predict.py --symbol RELIANCE --style btst
+python predict.py --symbol TCS --style swing
+python predict.py --symbol INFY --style intraday
+
+# Single stock with more history (more reliable signal)
+python predict.py --symbol RELIANCE --days 730
+
+
+# ================================================================
+#  SECTION 7 — SECTOR SCANS
+# ================================================================
+
+# Banking
+python predict.py --symbol HDFCBANK ICICIBANK AXISBANK KOTAKBANK SBIN INDUSINDBK --table --style btst
+
+# IT / Technology
+python predict.py --symbol TCS INFY WIPRO HCLTECH TECHM --table --style btst
+
+# Pharma
+python predict.py --symbol SUNPHARMA DRREDDY CIPLA DIVISLAB APOLLOHOSP --table --style btst
+
+# Auto
+python predict.py --symbol MARUTI TATAMOTORS BAJAJFINSV EICHERMOT M&M --table --style btst
+
+# FMCG
+python predict.py --symbol HINDUNILVR ITC NESTLEIND BRITANNIA TATACONSUM --table --style btst
+
+# Energy / Oil & Gas
+python predict.py --symbol RELIANCE ONGC BPCL COALINDIA NTPC POWERGRID --table --style btst
+
+# Metals / Infra
+python predict.py --symbol TATASTEEL JSWSTEEL HINDALCO LT GRASIM ULTRACEMCO --table --style btst
+
+# Finance / NBFC
+python predict.py --symbol BAJFINANCE BAJAJFINSV HDFCLIFE SBILIFE SHRIRAMFIN --table --style btst
+
+# Adani Group
+python predict.py --symbol ADANIENT ADANIPORTS --table --style btst
+
+# Mid-cap IT
+python predict.py --symbol MPHASIS COFORGE PERSISTENT LTTS TATAELXSI --table --style btst
+
+# Mid-cap Pharma
+python predict.py --symbol AUROPHARMA LUPIN TORNTPHARM ALKEM GLAND --table --style btst
+
+# Mid-cap Finance
+python predict.py --symbol FEDERALBNK IDFCFIRSTB BANDHANBNK MUTHOOTFIN CHOLAFIN --table --style btst
+
+# Small-cap IT / New-age
+python predict.py --symbol TANLA RATEGAIN ZOMATO NYKAA EASEMYTRIP --table --style btst
+
+# Small-cap Pharma
+python predict.py --symbol GRANULES LAURUSLABS SOLARA SEQUENT --table --style btst
+
+
+# ================================================================
+#  SECTION 8 — SECTOR TOP 5 PICKS
+# ================================================================
+
+python predict.py --symbol HDFCBANK ICICIBANK AXISBANK KOTAKBANK SBIN INDUSINDBK --top5 --style btst
+python predict.py --symbol TCS INFY WIPRO HCLTECH TECHM --top5 --style btst
+python predict.py --symbol SUNPHARMA DRREDDY CIPLA DIVISLAB APOLLOHOSP --top5 --style btst
+python predict.py --symbol MARUTI TATAMOTORS BAJAJFINSV EICHERMOT M&M --top5 --style btst
+python predict.py --symbol HINDUNILVR ITC NESTLEIND BRITANNIA TATACONSUM --top5 --style btst
+python predict.py --symbol RELIANCE ONGC BPCL COALINDIA NTPC POWERGRID --top5 --style btst
+
+
+# ================================================================
+#  SECTION 9 — STOCKS NOT IN ANY INDEX
+#  Any NSE listed stock works — just use its NSE symbol
+# ================================================================
+
+python predict.py --symbol DMART
+python predict.py --symbol TRENT
+python predict.py --symbol PAYTM
+python predict.py --symbol LODHA
+python predict.py --symbol PNB
+python predict.py --symbol CANBK
+python predict.py --symbol BANKBARODA
+
+# Custom watchlist scan
+python predict.py --symbol ZOMATO PAYTM NYKAA DELHIVERY IXIGO --table
+python predict.py --symbol PNB CANBK BANKBARODA UNIONBANK --table
+
+
+# ================================================================
+#  SECTION 10 — BACKTESTING
+# ================================================================
+
+# Backtest a single stock
+python ml/training/backtest.py --symbol RELIANCE --days 730
+
+# Backtest multiple stocks
+python ml/training/backtest.py --symbol TCS INFY HDFCBANK --days 730
+
+# Backtest full Nifty 50  (shows real win rate, Sharpe, drawdown)
+python ml/training/backtest.py --symbol all --days 730
+
+# Backtest with BTST holding period
+python ml/training/backtest.py --symbol all --days 365 --holding 1
+
+# Backtest with swing holding period
+python ml/training/backtest.py --symbol all --days 365 --holding 3
+
+# Results saved to: backtest_results.csv
+
+
+# ================================================================
+#  SECTION 11 — ML MODEL TRAINING
+# ================================================================
+
+# Train on full Nifty 50 + Midcap  (recommended — ~15 min)
+python ml/training/train_ml.py --symbol all --days 1825
+
+# Train on Nifty 50 only  (~5 min, faster)
+python ml/training/train_ml.py --symbol nifty50 --days 1825
+
+# Train on specific stocks only
+python ml/training/train_ml.py --symbol RELIANCE TCS INFY --days 730
+
+# After training:
+# - Model saved to: ml/training/models/xgb_model.pkl
+# - predict.py auto-loads it on next run
+# - Retrain monthly to keep model fresh
+
+
+# ================================================================
+#  SECTION 12 — DATA PROVIDERS
+#  Default is Yahoo Finance (free, no key needed).
+#  Use broker APIs for live intraday data.
+# ================================================================
+
+# Default — Yahoo Finance (no setup needed)
+python predict.py --symbol RELIANCE
+
+# Zerodha  (needs ZERODHA_API_KEY + ZERODHA_ACCESS_TOKEN in .env)
+python predict.py --symbol RELIANCE --provider zerodha
+python predict.py --symbol all --top5 --provider zerodha --style btst
+
+# Upstox  (needs UPSTOX_ACCESS_TOKEN in .env)
+python predict.py --symbol RELIANCE --provider upstox
+
+# Angel One  (needs ANGEL_API_KEY + ANGEL_CLIENT_ID + ANGEL_PASSWORD + ANGEL_TOTP_SECRET)
+python predict.py --symbol RELIANCE --provider angel
+
+# Groww  (needs GROWW_AUTH_TOKEN in .env — from browser DevTools)
+python predict.py --symbol RELIANCE --provider groww
+
+
+# ================================================================
+#  SECTION 13 — OUTCOME TRACKER COMMANDS
+# ================================================================
+
+# Add a signal you are acting on
+python track.py --add
+
+# Check all open signals (run after market close)
+python track.py
+
+# See open signals
+python track.py --open
+
+# Trade journal — last 30 days
+python track.py --journal
+
+# Trade journal — last 90 days
+python track.py --journal 90
+
+# Full stats (win rate, Sharpe, expectancy, best/worst)
+python track.py --stats
+
+# Export all trades to CSV
+python track.py --export
+
+
+# ================================================================
+#  SECTION 14 — FLAGS REFERENCE
+# ================================================================
+
+#  --symbol    NSE symbol(s) or index keyword
+#              Keywords: all, nifty50, midcap, smallcap, full
+#              Custom  : --symbol RELIANCE
+#              Multi   : --symbol TCS INFY WIPRO
+
+#  --style     intraday  = same day exit
+#              btst      = next day exit (Buy Today Sell Tomorrow)
+#              swing     = 2-5 day hold (default)
+
+#  --days      Historical days to analyse (default 365, min 400 fetched)
+
+#  --provider  yfinance (default), zerodha, upstox, angel, groww
+
+#  --table     Compact summary table
+
+#  --top5      Show Top 3 Buy + Top 2 Sell opportunities
+
+
+# ================================================================
+#  SECTION 15 — SIGNAL MEANINGS
+# ================================================================
+
+#  [++]  STRONG BUY   >= 80% confidence   Very high conviction bullish
+#  [ +]  BUY          >= 65% confidence   Clear bullish setup
+#  [ ~]  WEAK BUY     >= 55% confidence   Mild bullish, smaller size
+#  [ =]  HOLD         45-55% confidence   No edge, stay out
+#  [ v]  WEAK SELL    35-45% confidence   Mild bearish
+#  [ -]  SELL         <= 35% confidence   Clear bearish setup
+#  [--]  STRONG SELL  <= 20% confidence   Very high conviction bearish
+#  [!!]  BLOCKED       0% confidence      Earnings/event in next 3 days
+
+
+# ================================================================
+#  SECTION 16 — MARKET REGIME MEANINGS
+# ================================================================
+
+#  [^^] BULL     — Nifty above EMA200, VIX < 14
+#                  Trade at full size, normal threshold (55%+)
+
+#  [--] NEUTRAL  — Nifty near EMA200, VIX 14-18
+#                  Trade at 75% size, threshold 60%+
+
+#  [!-] CAUTION  — VIX 18-22 OR Nifty 2-5% below EMA200
+#                  Trade at 50% size, threshold 65%+
+
+#  [vv] BEAR     — VIX > 22 OR Nifty > 5% below EMA200
+#                  Trade at 25% size, SELL signals only, threshold 70%+
+
+
+# ================================================================
+#  SECTION 17 — NIFTY 50 SYMBOLS
+# ================================================================
+
+#  RELIANCE    TCS         HDFCBANK    INFY        ICICIBANK
+#  HINDUNILVR  SBIN        BHARTIARTL  KOTAKBANK   ITC
+#  LT          WIPRO       HCLTECH     AXISBANK    ASIANPAINT
+#  BAJFINANCE  MARUTI      SUNPHARMA   TITAN       ULTRACEMCO
+#  NESTLEIND   POWERGRID   NTPC        BAJAJFINSV  TECHM
+#  ONGC        COALINDIA   DIVISLAB    DRREDDY     CIPLA
+#  ADANIENT    ADANIPORTS  APOLLOHOSP  BPCL        BRITANNIA
+#  EICHERMOT   GRASIM      HEROMOTOCO  HINDALCO    INDUSINDBK
+#  JSWSTEEL    M&M         PIDILITIND  SBILIFE     SHRIRAMFIN
+#  TATACONSUM  TATASTEEL   HDFCLIFE    BAJAJFINSV  TATAMOTORS
+
+
+# ================================================================
+#  SECTION 18 — NIFTY MIDCAP SYMBOLS
+# ================================================================
+
+#  FEDERALBNK  IDFCFIRSTB  BANDHANBNK  MUTHOOTFIN  CHOLAFIN
+#  L&TFH       MANAPPURAM  SUNDARMFIN  MPHASIS     COFORGE
+#  PERSISTENT  LTTS        TATAELXSI   AUROPHARMA  LUPIN
+#  TORNTPHARM  ALKEM       GLAND       MAXHEALTH   FORTIS
+#  MOTHERSON   BALKRISIND  MRF         EXIDEIND    BHARATFORG
+#  ASHOKLEY    TVSMOTOR    SRF         DEEPAKNTR   TATACHEM
+#  VOLTAS      WHIRLPOOL   HAVELLS     CROMPTON    BERGEPAINT
+#  KANSAINER   OBEROIRLTY  PRESTIGE    PHOENIXLTD  GODREJPROP
+#  NATIONALUM  HINDCOPPER  SAIL        NMDC        PVRINOX
+#  ZEEL        CONCOR      GMRAIRPORT  IRCTC       NAUKRI
+
+
+# ================================================================
+#  SECTION 19 — NIFTY SMALLCAP SYMBOLS
+# ================================================================
+
+#  CREDITACC   UJJIVANSFB  EQUITASBNK  SURYODAY    ESAFSFB
+#  SPANDANA    AAVAS       TANLA       RATEGAIN    ZOMATO
+#  PAYTM       NYKAA       CARTRADE    EASEMYTRIP  GRANULES
+#  LAURUSLABS  SOLARA      SEQUENT     MEDANTA     KRSNAA
+#  VIJAYADIAG  VSTIND      BAJAJELEC   ORIENTELEC  RAJESHEXPO
+#  TTKPRESTIG  BATAINDIA   RELAXO      ENDURANCE   SUPRAJIT
+#  GABRIEL     SUNDRMFAST  LUMAXTECH   NAVINFLUOR  FINEORG
+#  ALKYLAMINE  AARTI       MAHINDCIE   HGINFRA     KNR
+#  PNCINFRA    AHLUCONT    RAYMOND     ARVIND      WELSPUNIND
+#  RATNAMANI   JINDALSAW   WELCORP     CDSL        CAMS
+
+
+# ================================================================
+#  QUICK REFERENCE CARD  (the only 5 commands you need daily)
+# ================================================================
+
+#  1. Morning scan:
+#     python predict.py --top5 --style btst
+
+#  2. Add signal you trade:
+#     python track.py --add
+
+#  3. Evening check:
+#     python track.py
+
+#  4. Weekly stats:
+#     python track.py --stats
+
+#  5. Monthly model retrain:
+#     python ml/training/train_ml.py --symbol all --days 1825
+
+# ================================================================

@@ -1,0 +1,141 @@
+name: CI/CD — AlphaTrader
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ghcr.io/${{ github.repository_owner }}/alphatrader
+
+jobs:
+  lint-and-test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements/base.txt
+          pip install -r requirements/dev.txt
+
+      - name: Ruff lint
+        run: ruff check . --output-format=github
+
+      - name: MyPy type check
+        run: mypy shared/ services/ --ignore-missing-imports
+
+      - name: Run tests
+        run: pytest tests/ -v --cov=services --cov=shared --cov-report=xml --cov-fail-under=70
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          file: coverage.xml
+
+  build-images:
+    name: Build & Push Docker Images
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        service: [api_gateway, ingestion, feature_engine, signal_engine, news_sentiment]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_PREFIX }}/${{ matrix.service }}
+          tags: |
+            type=sha,prefix=sha-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          target: ${{ matrix.service }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy-staging:
+    name: Deploy to Staging (AKS)
+    runs-on: ubuntu-latest
+    needs: build-images
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set AKS context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: alphatrader-rg
+          cluster-name: alphatrader-aks-staging
+
+      - name: Deploy to staging
+        run: |
+          kubectl set image deployment/api-gateway \
+            api-gateway=${{ env.IMAGE_PREFIX }}/api_gateway:sha-${{ github.sha }} \
+            -n alphatrader
+          kubectl set image deployment/signal-engine \
+            signal-engine=${{ env.IMAGE_PREFIX }}/signal_engine:sha-${{ github.sha }} \
+            -n alphatrader
+          kubectl rollout status deployment/api-gateway -n alphatrader --timeout=120s
+          kubectl rollout status deployment/signal-engine -n alphatrader --timeout=120s
+
+  deploy-production:
+    name: Deploy to Production (AKS)
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    environment: production
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set AKS context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: alphatrader-rg
+          cluster-name: alphatrader-aks-prod
+
+      - name: Blue-green deploy
+        run: |
+          kubectl set image deployment/api-gateway \
+            api-gateway=${{ env.IMAGE_PREFIX }}/api_gateway:sha-${{ github.sha }} \
+            -n alphatrader
+          kubectl rollout status deployment/api-gateway -n alphatrader --timeout=300s

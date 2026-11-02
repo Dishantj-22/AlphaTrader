@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: alphatrader
+  labels:
+    app.kubernetes.io/managed-by: kustomize
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alphatrader-config
+  namespace: alphatrader
+data:
+  ENVIRONMENT: production
+  KAFKA_BOOTSTRAP_SERVERS: kafka-headless.kafka.svc.cluster.local:9092
+  REDIS_URL: redis://redis-master.alphatrader.svc.cluster.local:6379/0
+  MLFLOW_TRACKING_URI: http://mlflow.alphatrader.svc.cluster.local:5000
+  LOG_LEVEL: INFO

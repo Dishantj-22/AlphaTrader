@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signal-engine
+  namespace: alphatrader
+  labels:
+    app: signal-engine
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: signal-engine
+  template:
+    metadata:
+      labels:
+        app: signal-engine
+    spec:
+      containers:
+        - name: signal-engine
+          image: alphatrader/signal-engine:latest
+          envFrom:
+            - configMapRef:
+                name: alphatrader-config
+            - secretRef:
+                name: alphatrader-secrets
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "2000m"
+              memory: "4Gi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: feature-engine
+  namespace: alphatrader
+  labels:
+    app: feature-engine
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: feature-engine
+  template:
+    metadata:
+      labels:
+        app: feature-engine
+    spec:
+      containers:
+        - name: feature-engine
+          image: alphatrader/feature-engine:latest
+          envFrom:
+            - configMapRef:
+                name: alphatrader-config
+            - secretRef:
+                name: alphatrader-secrets
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "2Gi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: news-sentiment
+  namespace: alphatrader
+  labels:
+    app: news-sentiment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: news-sentiment
+  template:
+    metadata:
+      labels:
+        app: news-sentiment
+    spec:
+      containers:
+        - name: news-sentiment
+          image: alphatrader/news-sentiment:latest
+          envFrom:
+            - configMapRef:
+                name: alphatrader-config
+            - secretRef:
+                name: alphatrader-secrets
+          volumeMounts:
+            - name: hf-cache
+              mountPath: /app/.cache/huggingface
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "2Gi"
+            limits:
+              cpu: "2000m"
+              memory: "6Gi"
+      volumes:
+        - name: hf-cache
+          persistentVolumeClaim:
+            claimName: hf-model-cache-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hf-model-cache-pvc
+  namespace: alphatrader
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 10Gi

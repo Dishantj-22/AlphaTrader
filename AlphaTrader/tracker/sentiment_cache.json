@@ -1,0 +1,206 @@
+{
+  "BAJFINANCE": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:36:43.902393"
+  },
+  "TCS": {
+    "score": 0.146,
+    "fetched_at": "2026-11-02T10:35:16.154403"
+  },
+  "RELIANCE": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:35:09.710383"
+  },
+  "HDFCBANK": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:35:22.828349"
+  },
+  "INFY": {
+    "score": 0.438,
+    "fetched_at": "2026-11-02T10:35:29.562048"
+  },
+  "ICICIBANK": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:35:35.905217"
+  },
+  "HINDUNILVR": {
+    "score": 0.438,
+    "fetched_at": "2026-11-02T10:35:41.766485"
+  },
+  "SBIN": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:35:47.730670"
+  },
+  "BHARTIARTL": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:35:53.447365"
+  },
+  "KOTAKBANK": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:35:59.367865"
+  },
+  "ITC": {
+    "score": 0.146,
+    "fetched_at": "2026-11-02T10:36:06.040460"
+  },
+  "LT": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:36:12.327020"
+  },
+  "WIPRO": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:36:18.746606"
+  },
+  "HCLTECH": {
+    "score": 0.328,
+    "fetched_at": "2026-11-02T10:36:24.975359"
+  },
+  "AXISBANK": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:36:31.253820"
+  },
+  "ASIANPAINT": {
+    "score": 0.197,
+    "fetched_at": "2026-11-02T10:36:37.493054"
+  },
+  "MARUTI": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:36:50.802351"
+  },
+  "SUNPHARMA": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:36:57.225895"
+  },
+  "TITAN": {
+    "score": 0.219,
+    "fetched_at": "2026-11-02T10:37:03.493852"
+  },
+  "ULTRACEMCO": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:37:09.640787"
+  },
+  "NESTLEIND": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:37:15.716446"
+  },
+  "POWERGRID": {
+    "score": 0.219,
+    "fetched_at": "2026-11-02T10:37:21.961552"
+  },
+  "NTPC": {
+    "score": 0.255,
+    "fetched_at": "2026-11-02T10:37:28.354592"
+  },
+  "BAJAJFINSV": {
+    "score": 0.146,
+    "fetched_at": "2026-11-02T10:37:34.471138"
+  },
+  "TECHM": {
+    "score": -0.088,
+    "fetched_at": "2026-11-02T10:37:41.035959"
+  },
+  "ONGC": {
+    "score": 0.219,
+    "fetched_at": "2026-11-02T10:37:47.684464"
+  },
+  "COALINDIA": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:37:53.949993"
+  },
+  "DIVISLAB": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:37:59.959682"
+  },
+  "DRREDDY": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:38:06.615067"
+  },
+  "CIPLA": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:38:12.986379"
+  },
+  "ADANIENT": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:38:18.798997"
+  },
+  "ADANIPORTS": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:38:25.007762"
+  },
+  "APOLLOHOSP": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:38:30.977403"
+  },
+  "BPCL": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:38:37.261036"
+  },
+  "BRITANNIA": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:38:43.160161"
+  },
+  "EICHERMOT": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:38:49.949515"
+  },
+  "GRASIM": {
+    "score": 0.438,
+    "fetched_at": "2026-11-02T10:38:56.199903"
+  },
+  "HEROMOTOCO": {
+    "score": 0.219,
+    "fetched_at": "2026-11-02T10:39:02.348500"
+  },
+  "HINDALCO": {
+    "score": -0.109,
+    "fetched_at": "2026-11-02T10:39:08.903626"
+  },
+  "INDUSINDBK": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:39:15.386305"
+  },
+  "JSWSTEEL": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:39:21.603094"
+  },
+  "M&M": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:39:26.981563"
+  },
+  "PIDILITIND": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:39:33.055137"
+  },
+  "SBILIFE": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:39:38.979826"
+  },
+  "SHRIRAMFIN": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:39:45.170132"
+  },
+  "TATACONSUM": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:39:51.284407"
+  },
+  "TATASTEEL": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:40:02.370147"
+  },
+  "HDFCLIFE": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:40:08.496212"
+  },
+  "HBLENGINE": {
+    "score": 0.0,
+    "fetched_at": "2026-11-02T10:29:47.527954"
+  },
+  "LTF": {
+    "score": 0.0,
+    "fetched_at": "2026-10-23T12:08:23.858980"
+  },
+  "BSE": {
+    "score": 0.0,
+    "fetched_at": "2026-10-16T12:49:54.946513"
+  }
+}
